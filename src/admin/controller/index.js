@@ -19,6 +19,7 @@ export default class extends Base {
    * index action
    * @return {Promise} []
    */
+  
   * indexAction(){
     //auto render template file index_index.html
     yield this.model("action").log("testaction","member",this.user.uid,this.user.uid,this.ip(),this.http.url);//测试日志行为
