@@ -1,7 +1,8 @@
 'use strict';
 
 import Base from './base.js';
-
+import http from 'http';
+import fs from 'fs';
 export default class extends Base {
   /**
    * index action
@@ -9,7 +10,7 @@ export default class extends Base {
    */
   indexAction(){
     //auto render template file index_index.html
-    think.log(this.referrer())
+
     return this.display();
   }
   /**
@@ -33,11 +34,17 @@ export default class extends Base {
   }
   /**qq登陆回掉地址 */
   qccallbackAction(){
+    if(this.is_login){
+      this.redirect('/user/index')
+    }
      return this.display();
 
   }
   /**获取qq登陆信息 */
   async loginresultAction(){
+    if(this.is_login){
+      this.redirect('/user/index')
+    }
     let res = this.get();
      let qqapi = think.service("qqapi");
      let qq = new qqapi(res.access_token,res.openid);
@@ -78,6 +85,9 @@ export default class extends Base {
   }
   //qq用户绑定页面
   async qqloginAction(){
+    if(this.is_login){
+      this.redirect('/user/index')
+    }
     let openid = this.get("id");
     let qq_user=await this.model("qq_user").where({openid:openid}).find();
     this.assign("qq_user",qq_user);
@@ -146,5 +156,47 @@ export default class extends Base {
     return this.success({name:"绑定成功",url:"/user/index"});
 
 
+  }
+  /**登录绑定 */
+  async logonbindingAction(){
+    let data = this.post();
+    //console.log(data);
+    let username = this.post('username');
+    let password = this.post('password');
+    password = encryptPassword(password);
+    console.log(data);
+
+    let res = await this.model("member", {}, "admin").signin(username, password, this.ip(), 5,0);
+    if (0 < res.uid) {
+      //记录用户登录行为
+      // await this.model("action", {}, "admin").log("user_login", "member", res.uid, res.uid, this.ip(), this.http.url);
+      //console.log(11111111111111);
+      let qq_info = await this.model("qq_user").where({openid:data.openid}).find();
+      await this.model("qq_user").where({openid:data.openid}).update({uid:res.uid});
+      //更新微信头像
+      let filePath=think.RESOURCE_PATH + '/upload/avatar/' +res.uid;
+      think.mkdir(filePath)
+      if(!think.isFile(filePath+'/avatar.png')) {
+        await this.spiderImage(data.headimgurl, filePath + '/avatar.png')
+      }
+      res.username = qq_info.nickname;
+      await this.session('webuser', res);
+      //TODO 用户密钥
+      return this.success({name:"绑定成功",url:"/user/index"});
+    } else { //登录失败
+      let fail;
+      switch (res) {
+        case -1:
+          fail = '用户不存在或被禁用';
+          break; //系统级别禁用
+        case -2:
+          fail = '密码错误';
+          break;
+        default:
+          fail = '未知错误';
+          break; // 0-接口参数错误（调试阶段使用）
+      }
+      this.fail(fail);
+    }
   }
 }
