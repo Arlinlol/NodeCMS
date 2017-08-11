@@ -1,4 +1,9 @@
-var _HS_UM = UM.getEditor("myEditor");
+ var _HS_UM  = UM.getEditor('myEditor', {
+    imageUrl:'/admin/ueditor/index',
+    lang:/^zh/.test(navigator.language || navigator.browserLanguage || navigator.userLanguage) ? 'zh-cn' : 'en',
+    langPath:UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
+    focus: true
+});
 // 初始化Web Uploader
 var _hs_uploader = WebUploader.create({
     // 选完文件后，是否自动上传。
