@@ -70,6 +70,7 @@ module.exports = class extends think.Controller {
     // 判断是否登录
     const user = await this.session('userInfo');
     const res = think.isEmpty(user) ? false : user.uid;
+    console.log('判断是否登录'+res);
     return res;
   }
 

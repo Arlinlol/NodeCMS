@@ -1,4 +1,5 @@
 module.exports = [
+  //每一条路由规则也为一个数组，数组里面的项分别对应为：match、pathname、method、options：
   ['', 'home/index/index', 'get'],
   ['/index', 'home/index/index', 'get'],
   ['/index/:order', 'home/index/index', 'get'],

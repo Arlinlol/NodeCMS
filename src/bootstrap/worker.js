@@ -8,5 +8,6 @@ think.beforeStartServer(async() => {
   think.config('setup', webconfig);
   // 加载扩展配置
   const extconfig = await think.model('cmswing/ext').getset();
+  //console.log(extconfig);
   think.config('ext', extconfig);
 });

@@ -18,6 +18,7 @@ module.exports = class extends think.cmswing.center {
     //     return think.statusAction(700, this.http);
     // }
     // 判断是否登陆
+      console.log('用户中心主页');
     // await this.weblogin();
     if (!this.is_login) {
       // 判断浏览客户端
@@ -69,6 +70,7 @@ module.exports = class extends think.cmswing.center {
 
   // 获取头像
   async avatarAction() {
+      console.log('获取头像');
     const uid = this.get('uid') || this.user.uid;
     var uploadPath = think.resource + '/upload/avatar/' + uid;
     const path = think.isFile(uploadPath + '/' + '/avatar.png');

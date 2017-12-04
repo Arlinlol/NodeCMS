@@ -25,8 +25,8 @@
                                 <a href="#" class="pull-right">忘记密码?</a>
                             </div>
                         </div>
-                        <!--是否开启验证码-->
-                        {%if config.setup.GEETEST_IS_LOGIN ==1%}
+                        <!--是否开启验证码{%if config.setup.GEETEST_IS_LOGIN ==0%}-->
+                        {%if config.setup.GEETEST_IS_LOGIN ==0%}
                         <div class="form-group">
                             <div id="captcha">
                                 <p id="wait" class="">正在加载验证码......</p>

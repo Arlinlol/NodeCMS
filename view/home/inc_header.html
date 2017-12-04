@@ -1,4 +1,4 @@
-<div id="header" class="sticky clearfix header-sm ">
+<div id="header" class="sticky clearfix header-md ">
 	<!--
 				AVAILABLE HEADER CLASSES
 
@@ -44,25 +44,24 @@
 						<i class="fa fa-search"></i>
 					</a>
 					<div class="search-box">
-						<form action="/search" method="get">
+						<form action="page-search-result-1.html" method="get">
 							<div class="input-group">
-								<input type="text" name="q" placeholder="Search" class="form-control" />
+								<input type="text" name="src" placeholder="Search" class="form-control" />
 								<span class="input-group-btn">
-												<button class="btn btn-primary" type="submit">搜索</button>
+												<button class="btn btn-primary" type="submit">Search</button>
 											</span>
 							</div>
 						</form>
 					</div>
 				</li>
 				<!-- /SEARCH -->
-				{% if 4|getmode('')|length>0 %}
+
 				<!-- QUICK SHOP CART -->
 				<li class="quick-cart">
 					<a href="#">
 						<span class="badge badge-aqua btn-xs badge-corner" id="badge-corner">{% if controller.cart.num %}{{controller.cart.num}}{%endif%}</span>
 						<i class="fa fa-shopping-cart"></i>
 					</a>
-
 					<div class="quick-cart-box">
 						<h4>购物车</h4>
 
@@ -86,23 +85,22 @@
 
 						<!-- quick cart footer -->
 						<div class="quick-cart-footer clearfix">
-							<a href="/center/cart" class="btn btn-primary btn-xs pull-right">去购物车结算</a>
+							<a href="/uc/cart" class="btn btn-primary btn-xs pull-right">去购物车结算</a>
 							<span class="pull-left"><strong>合计:</strong> <total>￥{% if controller.cart.total %}{{controller.cart.total|formatCurrency}}{%else%}0{%endif%}</total></span>
 						</div>
 						<!-- /quick cart footer -->
 
 					</div>
-
 				</li>
 				<!-- /QUICK SHOP CART -->
-				{%endif%}
+
 			</ul>
 			<!-- /BUTTONS -->
 
 
 			<!-- Logo -->
-			<a class="logo logo-svg pull-left" href="/">
-				<img src="/static/assets/images/logo.png" alt=""  />
+			<a class="logo pull-left" href="/">
+				<img src="/static/assets/images/logo_dark.png" alt="" />
 			</a>
 
 			<!--
@@ -128,7 +126,7 @@
 						{% channel data='channel'%}
 						{% for val in channel%}
 						{%if val.status > 0%}
-						<li class="{% if val.children %}dropdown{% endif %} {% if (category.id|in_Array(val.on)) or (val.url|in_Array(controller.active)) %}active{% endif %}">
+						<li class="{% if val.children %}dropdown{% endif %} {% if (category.id|in_Array(val.on)) or (val.url === controller.active) %}active{% endif %}">
 
 							<a {% if val.children%}class="dropdown-toggle" {% endif %} href="{{val.url}}" {%if val.target ==1%} target="_blank"{%endif%}>{{val.title}}</a> {% if val.children%}
 							<ul class="dropdown-menu">
